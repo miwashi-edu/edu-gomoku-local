@@ -61,7 +61,7 @@ describe('given a gomokuHandler', () => {
 describe('given a gameHandler', () => {
     describe('when creating game', () => {
       it('should have expected properties', () => {
-        const game = ggameHandler.createGame();
+        const game = gameHandler.createGame();
         expect(game).toHaveProperty("id");
         expect(game).toHaveProperty("name");
         expect(game).toHaveProperty("round");
