@@ -20,7 +20,7 @@ npm pkg set scripts.test:watch="jest --watchAll"
 npm install dotenv
 npm install -D jest
 mkdir -p src/__tests__
-touch ./src/{gomoku.js,error_messages.js,test_utils.js}
+touch ./src/{game.js,gomoku.js,error_messages.js,test_utils.js}
 touch ./src/__tests__/gomoku_tests.js
 ```
 
