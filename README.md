@@ -1,9 +1,6 @@
 # edu-gomoku-local
 
-> We crete a project for laborating with requirements for gomoku. We set up the project with jest testing framework with source code in src directory and tests
-> in src/\_\_tests\_\_ directory, which is a default folder for jest to find its tests.
-> We also create a test_util.js and error_message.js. Normally these are created during coding, but
-> as we want to focus on test first development these will be given.
+> We test requirements from mockup.
 >
 > The tests can be run with **npm test**, or **npm run test:watch**
 
@@ -12,91 +9,83 @@
 ```bash
 cd ~
 cd ws
-mkdir gomoku-lab
 cd gomoku-lab
-npm init -y
-npm pkg set scripts.test="jest"
-npm pkg set scripts.test:watch="jest --watchAll"
-npm install dotenv
-npm install -D jest
-mkdir -p src/__tests__
-touch ./src/{game.js,gomoku.js,error_messages.js,test_utils.js}
-touch ./src/__tests__/gomoku_tests.js
+touch ./src/__tests__/mockup_tests.js
 ```
 
-## ./src/test_utils.js
+## ./src/gomoku.js
 
-> Test utilites that will help us test game functionality.
+> This is minimum level for tests on previous level to go trough.
 
 ```bash
-cat > ./src/test_utils.js << EOF
-const randomSquare = ({cols, rows}) => ({
-    col: Math.floor(Math.random() * cols) + 1,
-    row: Math.floor(Math.random() * rows) + 1
-  });
-  
-  const randomSequence = ({cols, rows, minInRow}, dx, dy) => {
-    const col = Math.floor(Math.random() * (cols - minInRow + 1)) + 1;
-    const row = Math.floor(Math.random() * (rows - minInRow + 1)) + 1;
-    return Array.from({length: minInRow}, (_, i) => ({col: col + i * dx, row: row + i * dy}));
-  }
-  
-  const randomDiagonal = (board) => randomSequence(board, 1, 1);
-  const randomHorisontal = (board) => randomSequence(board, 1, 0);
-  const randomVertical = (board) => randomSequence(board, 0, 1);
-  
-  const fillBoard = (board) => {
-    let player = 1;
-    for (let col = 0; col < board.tiles.length; col++) {
-      for (let row = 0; row < board.tiles[col].length; row++) {
-        board.tiles[col][row] = player;
-        player = 3 - player; // Alternate between 1 and 2
-      }
-    }
-    return board;
-  }
-  
-  module.exports = { randomSquare, randomVertical, randomHorisontal, randomDiagonal, fillBoard };
+cat > ./src/game.js << EOF
+const isTie = () => {}
+const isWin = () => {}
+const createBoard = () => {}
+const play = () => {}
+
+module.exports = {play, isTie, isWin, createBoard}
 EOF
 ```
 
-## ./src/error_messages.js
+## ./src/game.js
 
-> Error messages used in the whole system
+> This is minimum level for tests on previous level to go trough.
 
 ```bash
-cat > ./src/error_messages.js << EOF
-const ERR_TILE_OUT_OF_BOUNDS="Tile don't exist!";
-const ERR_TILE_OCCUPIED="Tile occupied!";
-const ERR_PLAYER_OUT_OF_TURN="Player out of turn!";
-const ERR_GAME_FULL="Game is full!";
-const ERR_GAME_NOT_FOUND="Game not found!";
-const ERR_INVALID_PLAYER_ID="Invalid player ID!";
-const ERR_PLAYER_NOT_FOUND="Player not found!";
+cat > ./src/game.js << EOF
+const play = () => {}
+const createGame = () => {}
+const listGames = () => {}
+const findGameById = () => {}
+const addPlayer = () => {}
 
-module.exports = {
-    ERR_TILE_OCCUPIED,
-    ERR_TILE_OUT_OF_BOUNDS,
-    ERR_PLAYER_OUT_OF_TURN,
-    ERR_GAME_FULL,
-    ERR_GAME_NOT_FOUND,
-    ERR_INVALID_PLAYER_ID,
-    ERR_PLAYER_NOT_FOUND
-};
+module.exports = {play,createGame,listGames,findGameById,addPlayer}
 EOF
 ```
 
-## ./src/\_\_tests\_\_/gomoku_tests.js
+## ./src/\_\_tests\_\_/mockup_tests.js
 
-> This is the file where we will write our tests.
+> These are the json we found in the mockup.
 
 ```bash
-cat > ./src/__tests__/gomoku_tests.js << EOF
-//Dummy test to show jest is working
-describe('jest', () => {
-    describe('dumy test', () => {
-      it('should work', () => {
-        expect(true).toBe(true);
+cat > ./src/__tests__/mockup_tests.js << EOF
+const gomokuHandler = require('../gomoku');
+const gameHandler = require('../game');
+const ERR_MSGS = require('../error_messages');
+
+describe('given a gomokuHandler', () => {
+    describe('when creating board', () => {
+      it('should have expected properties', () => {
+        const board = gomokuHandler.createBoard();
+        expect(board).toHaveProperty('minInRow');
+        expect(board).toHaveProperty('cols');
+        expect(board).toHaveProperty('rows');
+        expect(board).toHaveProperty('state');
+        expect(board).toHaveProperty('tiles');
+        expect(Array.isArray(board.tiles)).toBe(true);
+        for( const row of board.tiles){
+          expect(Array.isArray(row)).toBe(true);
+          for( const tile of row){
+            expect(tile).toBe(0);
+          }
+        }
+      });
+   });
+});
+
+describe('given a gameHandler', () => {
+    describe('when creating game', () => {
+      it('should have expected properties', () => {
+        const game = gameHandler.createGame();
+        expect(game).toHaveProperty("id");
+        expect(game).toHaveProperty("name");
+        expect(game).toHaveProperty("round");
+        expect(game).toHaveProperty("player");
+        expect(game).toHaveProperty("player1");
+        expect(game).toHaveProperty("player2");
+        expect(game).toHaveProperty("state");
+        expect(game).toHaveProperty("board");
       });
     });
 });
@@ -104,6 +93,8 @@ EOF
 ```
 
 ## Test it
+
+> Try solving all requirements, soluting will be shown in next level.
 
 ```bash
 npm test
