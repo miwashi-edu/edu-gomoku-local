@@ -35,7 +35,8 @@ EOF
 ```bash
 cat > ./src/__tests__/activity_diagram_tests.js << EOF
 const gomokuHandler = require('../gomoku');
-const ERR_MSGS = require('../error_messages');
+const gomokuHandler = require('../game');
+
 describe('given a gomokuHandler', () => {
     describe('when created', () => {
       it('then should have expected properties', () => {
@@ -45,7 +46,16 @@ describe('given a gomokuHandler', () => {
         expect(gomokuHandler).toHaveProperty('createBoard');
       });
     });
-  });
+});
+
+describe('given a gameHandler', () => {
+    describe('when created', () => {
+      it('then should have expected properties', () => {
+        expect(gameHandler).toHaveProperty('listGames');
+        expect(gameHandler).toHaveProperty('findGameById');
+      });
+    });
+});
 EOF
 ```
 
