@@ -24,7 +24,7 @@ cat > ./src/__tests__/gomoku_tests.js << EOF
 
 const gomokuHandler = require('../gomoku.js');
 const ERR_MSGS = require('../error_messages.js');
-const testUtil = require('../test_util.js');
+const testUtil = require('../test_utils.js');
 
   /**
    * Test if a tile gets occupied with play.
