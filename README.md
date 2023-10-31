@@ -21,7 +21,7 @@ npm install dotenv
 npm install -D jest
 mkdir -p src/__tests__
 touch ./src/{gomoku.js,error_messages.js,test_utils.js}
-touch ./__tests__/gomoku_tests.js
+touch ./src/__tests__/gomoku_tests.js
 ```
 
 ## ./src/test_utils.js
@@ -86,7 +86,7 @@ module.exports = {
 EOF
 ```
 
-## ./src/__tests__/gomoku_tests.js
+## ./src/\_\_tests\_\_/gomoku_tests.js
 
 > This is the file where we will write our tests.
 
@@ -94,9 +94,9 @@ EOF
 cat > ./src/__tests__/gomoku_tests.js << EOF
 //Dummy test to show jest is working
 describe('jest', () => {
-    describe('component test', () => {
+    describe('dumy test', () => {
       it('should work', () => {
-        expect(1).toBe(1);
+        expect(true).toBe(true);
       });
     });
 });
