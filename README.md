@@ -13,7 +13,7 @@
 cd ~
 cd ws
 cd gomoku-lab
-touch ./src/__tests__/gomoku_tests.js
+touch ./src/__tests__/gomoku_state_diagram_tests.js
 ```
 
 ## ./src/\_\_tests\_\_/gomoku_state_diagram_tests.js
@@ -23,16 +23,17 @@ touch ./src/__tests__/gomoku_tests.js
 
 ```bash
 cat > ./src/__tests__/gomoku_state_diagram_tests.js << EOF
-const gomokuHandler = require('../gomoku');
+const gomokuHandler = require('../game');
 const ERR_MSGS = require('../error_messages');
 
-describe('given a gomokuHandler', () => {
+describe('given gameHandler', () => {
+  describe('when using ', () => {
     it('should have expected properties', () => {
-        expect(gomokuHandler).toHaveProperty('play');
-        expect(gomokuHandler).toHaveProperty('isWin');
-        expect(gomokuHandler).toHaveProperty('isTie');
-        expect(gomokuHandler).toHaveProperty('createBoard');
+      expect(gameHandler).toHaveProperty('play');
+      expect(gameHandler).toHaveProperty('addPlayer');
+      expect(gameHandler).toHaveProperty('createGame');
     });
+  });
 });
 EOF
 ```
