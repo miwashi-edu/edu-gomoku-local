@@ -18,7 +18,8 @@ touch ./src/__tests__/mockup_tests.js
 > This is minimum level for tests on previous level to go trough.
 
 ```bash
-cat > ./src/game.js << EOFconst isTie = () => {}
+cat > ./src/game.js << EOF
+const isTie = () => {}
 const isWin = () => {}
 const createBoard = () => {}
 const play = () => {}
@@ -32,7 +33,7 @@ EOF
 > This is minimum level for tests on previous level to go trough.
 
 ```bash
-cat > ./src/game.js << EOFconst isTie = () => {}
+cat > ./src/game.js << EOF
 const play = () => {}
 const createGame = () => {}
 const listGames = () => {}
