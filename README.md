@@ -1,9 +1,6 @@
 # edu-gomoku-local
 
-> We crete a project for laborating with requirements for gomoku. We set up the project with jest testing framework with source code in src directory and tests
-> in src/\_\_tests\_\_ directory, which is a default folder for jest to find its tests.
-> We also create a test_util.js and error_message.js. Normally these are created during coding, but
-> as we want to focus on test first development these will be given.
+> We test gomoku.js
 >
 > The tests can be run with **npm test**, or **npm run test:watch**
 
@@ -12,93 +9,192 @@
 ```bash
 cd ~
 cd ws
-mkdir gomoku-lab
 cd gomoku-lab
-npm init -y
-npm pkg set scripts.test="jest"
-npm pkg set scripts.test:watch="jest --watchAll"
-npm install dotenv
-npm install -D jest
-mkdir -p src/__tests__
-touch ./src/{game.js,gomoku.js,error_messages.js,test_utils.js}
-touch ./src/__tests__/gomoku_tests.js
-```
-
-## ./src/test_utils.js
-
-> Test utilites that will help us test game functionality.
-
-```bash
-cat > ./src/test_utils.js << EOF
-const randomSquare = ({cols, rows}) => ({
-    col: Math.floor(Math.random() * cols) + 1,
-    row: Math.floor(Math.random() * rows) + 1
-  });
-  
-  const randomSequence = ({cols, rows, minInRow}, dx, dy) => {
-    const col = Math.floor(Math.random() * (cols - minInRow + 1)) + 1;
-    const row = Math.floor(Math.random() * (rows - minInRow + 1)) + 1;
-    return Array.from({length: minInRow}, (_, i) => ({col: col + i * dx, row: row + i * dy}));
-  }
-  
-  const randomDiagonal = (board) => randomSequence(board, 1, 1);
-  const randomHorisontal = (board) => randomSequence(board, 1, 0);
-  const randomVertical = (board) => randomSequence(board, 0, 1);
-  
-  const fillBoard = (board) => {
-    let player = 1;
-    for (let col = 0; col < board.tiles.length; col++) {
-      for (let row = 0; row < board.tiles[col].length; row++) {
-        board.tiles[col][row] = player;
-        player = 3 - player; // Alternate between 1 and 2
-      }
-    }
-    return board;
-  }
-  
-  module.exports = { randomSquare, randomVertical, randomHorisontal, randomDiagonal, fillBoard };
-EOF
-```
-
-## ./src/error_messages.js
-
-> Error messages used in the whole system
-
-```bash
-cat > ./src/error_messages.js << EOF
-const ERR_TILE_OUT_OF_BOUNDS="Tile don't exist!";
-const ERR_TILE_OCCUPIED="Tile occupied!";
-const ERR_PLAYER_OUT_OF_TURN="Player out of turn!";
-const ERR_GAME_FULL="Game is full!";
-const ERR_GAME_NOT_FOUND="Game not found!";
-const ERR_INVALID_PLAYER_ID="Invalid player ID!";
-const ERR_PLAYER_NOT_FOUND="Player not found!";
-
-module.exports = {
-    ERR_TILE_OCCUPIED,
-    ERR_TILE_OUT_OF_BOUNDS,
-    ERR_PLAYER_OUT_OF_TURN,
-    ERR_GAME_FULL,
-    ERR_GAME_NOT_FOUND,
-    ERR_INVALID_PLAYER_ID,
-    ERR_PLAYER_NOT_FOUND
-};
-EOF
 ```
 
 ## ./src/\_\_tests\_\_/gomoku_tests.js
 
-> This is the file where we will write our tests.
+> Turn on test one by one and fullfill the requirements.
 
 ```bash
 cat > ./src/__tests__/gomoku_tests.js << EOF
-//Dummy test to show jest is working
-describe('jest', () => {
-    describe('dumy test', () => {
-      it('should work', () => {
-        expect(true).toBe(true);
+/**
+ * @group unit
+ */
+
+const gomokuHandler = require('../domain/gomoku.js');
+const ERR_MSGS = require('../util/error_messages.js');
+const testUtil = require('../util/test_util.js');
+
+  /**
+   * Test if a tile gets occupied with play.
+   */
+  describe.skip('given a board, and tile', () => {
+    const player = 1;
+    const row = 1; 
+    const col = 1;
+    let board = gomokuHandler.createBoard();
+    describe('when playing the tile', () => {
+      board = gomokuHandler.play(board, row, col, player);
+      it('tile should be occupied', () => {
+        expect(
+          board.tiles[row][col]
+        ).toBe(player);
       });
     });
+  });
+  
+  /**
+   * Test if playing first and last tile works.
+   * This test is important as it will test the boundaries
+   * does first tile start with 0 or 1?
+   */
+  describe.skip('given a board, and player', () => {
+    const player = 1;
+    let board = gomokuHandler.createBoard();
+    describe('when playing outside board', () => {
+      it('last tile should not throw exception', () => {
+        expect(() => {
+          gomokuHandler.play(board, board.cols, board.rows, player);
+        }).not.toThrow("Tile don't exist!")
+      });
+      it('first tile should not throw exception', () => {
+        expect(() => {
+          gomokuHandler.play(board, 1, 1, player);
+        }).not.toThrow(ERR_MSGS.ERR_TILE_OUT_OF_BOUNDS)
+      });
+    })
+  });
+
+  /**
+   * Test if playing outside board throws Exception
+   */
+  describe.skip('given a board, and player', () => {
+    const player = 1;
+    let board = gomokuHandler.createBoard();
+    describe('when playing outside board', () => {
+      describe('to left', () => {
+        it('should throw exception', () => {
+          expect(() => {
+            gomokuHandler.play(board, 0, 1, player);
+          }).toThrow(ERR_MSGS.ERR_TILE_OUT_OF_BOUNDS)
+        });
+      });
+
+      describe('to right', () => {
+        it('should throw exception', () => {
+          expect(() => {
+            gomokuHandler.play(board, board.cols + 1, 1, player);
+          }).toThrow(ERR_MSGS.ERR_TILE_OUT_OF_BOUNDS)
+        });
+      });
+
+      describe('above', () => {
+        it('should throw exception', () => {
+          expect(() => {
+            gomokuHandler.play(board, board.cols + 1, 1, player);
+          }).toThrow(ERR_MSGS.ERR_TILE_OUT_OF_BOUNDS)
+        });
+      });
+
+      describe('below', () => {
+        it('should throw exception', () => {
+          expect(() => {
+            gomokuHandler.play(board, board.cols + 1, 1, player);
+          }).toThrow(ERR_MSGS.ERR_TILE_OUT_OF_BOUNDS)
+        });
+      });
+
+    });
+  });
+
+  /**
+   * Test if playing on same tile throws Exception
+   */
+  describe.skip('given a board, and tile', () => {
+    const player = 1;
+    const tile = {col: 1, row: 1};
+    let board = gomokuHandler.createBoard();
+    describe('when playing on non empty tile', () => {
+      board = gomokuHandler.play(board, tile.col, tile.row, player);
+      it('game should throw exception', () => {
+        expect(() => {
+          gomokuHandler.play(board, tile.col, tile.row, player);
+        }).toThrow(ERR_MSGS.ERR_TILE_OCCUPIED)
+      });
+    });
+  });
+
+  /**
+   * Test if a gameHandler can detect that no winner exists!
+   */
+  describe.skip('given an empty board', () => {
+    let board = gomokuHandler.createBoard();
+    describe('when checking for win condition', () => {
+      it('isWin should return false', () => {
+        expect(gomokuHandler.isWin(board)).toBe(false);
+      });
+    });
+  });
+
+  /**
+   * Test if gameHandler can detect that a winner does exist
+   */
+  describe.skip('given a board', () => {
+    const  player = 1;
+
+    describe('when having random diagonal five in row', () => {
+      let board = gomokuHandler.createBoard();
+      for(let tile of testUtil.randomDiagonal(board)){
+        board = gomokuHandler.play(board, tile.col, tile.row, player);
+      }
+      it('isWin should return true', () => {
+        expect(gomokuHandler.isWin(board)).toBe(true);
+      });
+    });
+
+    describe('when having random vertical five in row', () => {
+      let board = gomokuHandler.createBoard();
+      for(let tile of testUtil.randomVertical(board)){
+        board = gomokuHandler.play(board, tile.col, tile.row, player);
+      }
+      it('isWin should return true', () => {
+        expect(gomokuHandler.isWin(board)).toBe(true);
+      });
+    });
+
+    describe('when having random horizontal five in row', () => {
+      let player = 1;
+      let board = gomokuHandler.createBoard();
+      for(let tile of testUtil.randomHorisontal(board)){
+        board = gomokuHandler.play(board, tile.col, tile.row, player);
+      }
+      it('isWin should return true', () => {
+        expect(gomokuHandler.isWin(board)).toBe(true);
+      });
+    });
+  });
+
+/**
+ * Test if gameHandler can detect that a winner does exist
+ */
+describe.skip('given a board', () => {
+  const  player = 1;
+  describe('when more moves, and no winner', () => {
+    let board = gomokuHandler.createBoard();
+    it('isTie should return true', () => {
+      expect(gomokuHandler.isTie(board)).toBe(false);
+    });
+  });
+
+  describe('when no more moves, and no winner', () => {
+    let board = gomokuHandler.createBoard();
+    board = testUtil.fillBoard(board);
+    it('isTie should return true', () => {
+      expect(gomokuHandler.isTie(board)).toBe(true);
+    });
+  });
+
 });
 EOF
 ```
