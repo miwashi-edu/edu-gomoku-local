@@ -12,98 +12,33 @@
 ```bash
 cd ~
 cd ws
-mkdir gomoku-lab
 cd gomoku-lab
-npm init -y
-npm pkg set scripts.test="jest"
-npm pkg set scripts.test:watch="jest --watchAll"
-npm install dotenv
-npm install -D jest
-mkdir -p src/__tests__
-touch ./src/{gomoku.js,error_messages.js,test_utils.js}
-touch ./src/__tests__/gomoku_tests.js
+touch ./src/__tests__/gomoku_activity_diagram_tests.js
 ```
 
-## ./src/test_utils.js
-
-> Test utilites that will help us test game functionality.
+## ./src/gomoku.js
 
 ```bash
-cat > ./src/test_utils.js << EOF
-const randomSquare = ({cols, rows}) => ({
-    col: Math.floor(Math.random() * cols) + 1,
-    row: Math.floor(Math.random() * rows) + 1
-  });
-  
-  const randomSequence = ({cols, rows, minInRow}, dx, dy) => {
-    const col = Math.floor(Math.random() * (cols - minInRow + 1)) + 1;
-    const row = Math.floor(Math.random() * (rows - minInRow + 1)) + 1;
-    return Array.from({length: minInRow}, (_, i) => ({col: col + i * dx, row: row + i * dy}));
-  }
-  
-  const randomDiagonal = (board) => randomSequence(board, 1, 1);
-  const randomHorisontal = (board) => randomSequence(board, 1, 0);
-  const randomVertical = (board) => randomSequence(board, 0, 1);
-  
-  const fillBoard = (board) => {
-    let player = 1;
-    for (let col = 0; col < board.tiles.length; col++) {
-      for (let row = 0; row < board.tiles[col].length; row++) {
-        board.tiles[col][row] = player;
-        player = 3 - player; // Alternate between 1 and 2
-      }
-    }
-    return board;
-  }
-  
-  module.exports = { randomSquare, randomVertical, randomHorisontal, randomDiagonal, fillBoard };
-EOF
+cat > ./src/gomoku.js << EOF
+cd
 ```
 
-## ./src/error_messages.js
+## ./src/\_\_tests\_\_/gomoku_activity_diagram_tests.js
 
-> Error messages used in the whole system
-
-```bash
-cat > ./src/error_messages.js << EOF
-const ERR_TILE_OUT_OF_BOUNDS="Tile don't exist!";
-const ERR_TILE_OCCUPIED="Tile occupied!";
-const ERR_PLAYER_OUT_OF_TURN="Player out of turn!";
-const ERR_GAME_FULL="Game is full!";
-const ERR_GAME_NOT_FOUND="Game not found!";
-const ERR_INVALID_PLAYER_ID="Invalid player ID!";
-const ERR_PLAYER_NOT_FOUND="Player not found!";
-
-module.exports = {
-    ERR_TILE_OCCUPIED,
-    ERR_TILE_OUT_OF_BOUNDS,
-    ERR_PLAYER_OUT_OF_TURN,
-    ERR_GAME_FULL,
-    ERR_GAME_NOT_FOUND,
-    ERR_INVALID_PLAYER_ID,
-    ERR_PLAYER_NOT_FOUND
-};
-EOF
-```
-
-## ./src/\_\_tests\_\_/gomoku_tests.js
-
-> This is the file where we will write our tests.
+> These are the state transitions that we found in the state diagram.
+> In the end these will become services, but for now we implement them in gomoku.js.
 
 ```bash
-cat > ./src/__tests__/gomoku_tests.js << EOF
-//Dummy test to show jest is working
-describe('jest', () => {
-    describe('dumy test', () => {
-      it('should work', () => {
-        expect(true).toBe(true);
-      });
-    });
-});
+cat > ./src/__tests__/gomoku_activity_diagram_tests.js << EOF
+const gomokuHandler = require('../gomoku');
+const ERR_MSGS = require('../error_messages');
+
 EOF
 ```
 
 ## Test it
+
+> Try solving all requirements, soluting will be shown in next level.
 
 ```bash
 npm test
