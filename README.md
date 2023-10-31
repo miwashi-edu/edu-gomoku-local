@@ -10,7 +10,7 @@
 cd ~
 cd ws
 cd gomoku-lab
-touch ./src/__tests__/mockup_tests.js
+npm install uuid
 ```
 
 ## ./src/gomoku.js
