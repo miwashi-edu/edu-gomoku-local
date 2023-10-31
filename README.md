@@ -29,8 +29,7 @@ EOF
 
 ## ./src/\_\_tests\_\_/mockup_tests.js
 
-> These are the state transitions that we found in the state diagram.
-> In the end these will become services, but for now we implement them in gomoku.js.
+> These are the json we found in the mockup.
 
 ```bash
 cat > ./src/__tests__/mockup_tests.js << EOF
