@@ -35,7 +35,7 @@ EOF
 ```bash
 cat > ./src/__tests__/activity_diagram_tests.js << EOF
 const gomokuHandler = require('../gomoku');
-const gomokuHandler = require('../game');
+const gameHandler = require('../game');
 
 describe('given a gomokuHandler', () => {
     describe('when created', () => {
