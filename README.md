@@ -12,8 +12,8 @@
 ```bash
 cd ~
 cd ws
-mkdir gomoku-local
-cd gomoku-local
+mkdir gomoku-lab
+cd gomoku-lab
 npm init -y
 npm pkg set scripts.test="jest"
 npm pkg set scripts.test:watch="jest --watchAll"
