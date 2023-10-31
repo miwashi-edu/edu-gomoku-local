@@ -23,7 +23,7 @@ touch ./src/__tests__/state_diagram_tests.js
 
 ```bash
 cat > ./src/__tests__/state_diagram_tests.js << EOF
-const gomokuHandler = require('../game');
+const gameHandler = require('../game');
 const ERR_MSGS = require('../error_messages');
 
 describe('given gameHandler', () => {
