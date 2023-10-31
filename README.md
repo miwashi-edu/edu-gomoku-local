@@ -13,16 +13,16 @@
 cd ~
 cd ws
 cd gomoku-lab
-touch ./src/__tests__/gomoku_state_diagram_tests.js
+touch ./src/__tests__/state_diagram_tests.js
 ```
 
-## ./src/\_\_tests\_\_/gomoku_state_diagram_tests.js
+## ./src/\_\_tests\_\_/state_diagram_tests.js
 
 > These are the state transitions that we found in the state diagram.
 > In the end these will become services, but for now we implement them in gomoku.js.
 
 ```bash
-cat > ./src/__tests__/gomoku_state_diagram_tests.js << EOF
+cat > ./src/__tests__/state_diagram_tests.js << EOF
 const gomokuHandler = require('../game');
 const ERR_MSGS = require('../error_messages');
 
