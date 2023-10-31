@@ -1,9 +1,6 @@
 # edu-gomoku-local
 
-> We crete a project for laborating with requirements for gomoku. We set up the project with jest testing framework with source code in src directory and tests
-> in src/\_\_tests\_\_ directory, which is a default folder for jest to find its tests.
-> We also create a test_util.js and error_message.js. Normally these are created during coding, but
-> as we want to focus on test first development these will be given.
+> We test requirements from state diagram.
 >
 > The tests can be run with **npm test**, or **npm run test:watch**
 
