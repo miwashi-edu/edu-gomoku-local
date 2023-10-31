@@ -61,7 +61,6 @@ describe('given a gomokuHandler', () => {
         expect(board).toHaveProperty('minInRow');
         expect(board).toHaveProperty('cols');
         expect(board).toHaveProperty('rows');
-        expect(board).toHaveProperty('state');
         expect(board).toHaveProperty('tiles');
         expect(Array.isArray(board.tiles)).toBe(true);
         for( const row of board.tiles){
