@@ -13,7 +13,7 @@
 cd ~
 cd ws
 cd gomoku-lab
-touch ./src/__tests__/gomoku_activity_diagram_tests.js
+touch ./src/__tests__/activity_diagram_tests.js
 ```
 
 ## ./src/gomoku.js
@@ -21,23 +21,22 @@ touch ./src/__tests__/gomoku_activity_diagram_tests.js
 > This is minimum level for tests on previous level to go trough.
 
 ```bash
-cat > ./src/gomoku.js << EOF
-const isTie = () => {}
-const isWin = () => {}
-const createBoard = () => {}
+cat > ./src/game.js << EOF
 const play = () => {}
+const addPlayer = () => {}
+const createGame = () => {}
 
-module.exports = {play, isTie, isWin, createBoard}
-cd
+module.exports = {play, addPlayer, createGame}
+EOF
 ```
 
-## ./src/\_\_tests\_\_/gomoku_activity_diagram_tests.js
+## ./src/\_\_tests\_\_/activity_diagram_tests.js
 
 > These are the state transitions that we found in the state diagram.
 > In the end these will become services, but for now we implement them in gomoku.js.
 
 ```bash
-cat > ./src/__tests__/gomoku_activity_diagram_tests.js << EOF
+cat > ./src/__tests__/activity_diagram_tests.js << EOF
 const gomokuHandler = require('../gomoku');
 const ERR_MSGS = require('../error_messages');
 describe('given a gomokuHandler', () => {
