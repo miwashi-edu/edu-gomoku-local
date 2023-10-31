@@ -41,7 +41,6 @@ const findGameById = () => {}
 const addPlayer = () => {}
 
 module.exports = {play,createGame,listGames,findGameById,addPlayer}
-}
 EOF
 ```
 
