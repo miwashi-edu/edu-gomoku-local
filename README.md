@@ -21,7 +21,7 @@ npm install -D uuid-validate
 ```bash
 cat > ./src/__tests__/game_tests.js << EOF
 const { faker } = require('@faker-js/faker'); // Vi använder faker för att skapa testdata.
-const gameHandler = require('../domain/game.js');
+const gameHandler = require('../game.js');
 const isUuid = require('uuid-validate');
 
 /**
