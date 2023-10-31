@@ -22,9 +22,9 @@ cat > ./src/__tests__/gomoku_tests.js << EOF
  * @group unit
  */
 
-const gomokuHandler = require('../domain/gomoku.js');
-const ERR_MSGS = require('../util/error_messages.js');
-const testUtil = require('../util/test_util.js');
+const gomokuHandler = require('../gomoku.js');
+const ERR_MSGS = require('../error_messages.js');
+const testUtil = require('../test_util.js');
 
   /**
    * Test if a tile gets occupied with play.
