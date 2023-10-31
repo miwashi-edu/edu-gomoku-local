@@ -27,6 +27,23 @@ module.exports = {play, isTie, isWin, createBoard}
 EOF
 ```
 
+## ./src/game.js
+
+> This is minimum level for tests on previous level to go trough.
+
+```bash
+cat > ./src/game.js << EOFconst isTie = () => {}
+const play = () => {}
+const createGame = () => {}
+const listGames = () => {}
+const findGameById = () => {}
+const addPlayer = () => {}
+
+module.exports = {play,createGame,listGames,findGameById,addPlayer}
+}
+EOF
+```
+
 ## ./src/\_\_tests\_\_/mockup_tests.js
 
 > These are the json we found in the mockup.
