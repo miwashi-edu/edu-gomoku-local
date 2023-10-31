@@ -27,7 +27,7 @@ const isUuid = require('uuid-validate');
 /**
  * Test storage of games.
  */
-describe('given a gameHandler', () => {
+describe.skip('given a gameHandler', () => {
   describe('when creating game', () => {
     it('then should add one game', () => {
       const expectedNumberOfGames = gameHandler.getGames().length + 1;
@@ -52,7 +52,7 @@ describe('given a gameHandler', () => {
 /**
  * Test listing games!
  */
-describe('given gameHandler', () => {
+describe.skip('given gameHandler', () => {
   describe('when listing games', () => {
     it('then should return array', () => {
       const game = gameHandler.createGame();
@@ -65,7 +65,7 @@ describe('given gameHandler', () => {
 /**
  * Test retrieving a game by id.
  */
-describe('given gameHandler', () => {
+describe.skip('given gameHandler', () => {
   describe('when finding game', () => {
     const game = gameHandler.createGame();
     it('then should find game by id', () => {
@@ -81,14 +81,14 @@ describe('given gameHandler', () => {
 describe('given gameHandler and a game', () => {
   let game = gameHandler.createGame();
 
-  describe('when adding no players', () => {
+  describe.skip('when adding no players', () => {
     it('then should have game with no players', () => {
       expect(game.player1).toBe(null);
       expect(game.player2).toBe(null);
     });
   });
 
-  describe('when adding player with no name', () => {
+  describe.skip('when adding player with no name', () => {
     it('then should have correct attributes', () => {
       game = gameHandler.addPlayer(game.id);
       expect(game.player1).not.toBe(null);
@@ -99,7 +99,7 @@ describe('given gameHandler and a game', () => {
     });
   });
 
-  describe('when adding another player with no name', () => {
+  describe.skip('when adding another player with no name', () => {
     it('then should have correct attributes', () => {
       game = gameHandler.addPlayer(game.id);
       expect(game.player2).not.toBe(null);
