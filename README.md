@@ -18,8 +18,16 @@ touch ./src/__tests__/gomoku_activity_diagram_tests.js
 
 ## ./src/gomoku.js
 
+> This is minimum level for tests on previous level to go trough.
+
 ```bash
 cat > ./src/gomoku.js << EOF
+const isTie = () => {}
+const isWin = () => {}
+const createBoard = () => {}
+const play = () => {}
+
+module.exports = {play, isTie, isWin, createBoard}
 cd
 ```
 
@@ -32,7 +40,16 @@ cd
 cat > ./src/__tests__/gomoku_activity_diagram_tests.js << EOF
 const gomokuHandler = require('../gomoku');
 const ERR_MSGS = require('../error_messages');
-
+describe('given a gomokuHandler', () => {
+    describe('when created', () => {
+      it('then should have expected properties', () => {
+        expect(gomokuHandler).toHaveProperty('play');
+        expect(gomokuHandler).toHaveProperty('isWin');
+        expect(gomokuHandler).toHaveProperty('isTie');
+        expect(gomokuHandler).toHaveProperty('createBoard');
+      });
+    });
+  });
 EOF
 ```
 
