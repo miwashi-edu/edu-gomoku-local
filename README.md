@@ -12,93 +12,119 @@
 ```bash
 cd ~
 cd ws
-mkdir gomoku-lab
 cd gomoku-lab
-npm init -y
-npm pkg set scripts.test="jest"
-npm pkg set scripts.test:watch="jest --watchAll"
-npm install dotenv
-npm install -D jest
-mkdir -p src/__tests__
-touch ./src/{game.js,gomoku.js,error_messages.js,test_utils.js}
-touch ./src/__tests__/gomoku_tests.js
+npm install -D @faker-js/faker
+npm install -D uuid-validate
 ```
 
-## ./src/test_utils.js
-
-> Test utilites that will help us test game functionality.
-
-```bash
-cat > ./src/test_utils.js << EOF
-const randomSquare = ({cols, rows}) => ({
-    col: Math.floor(Math.random() * cols) + 1,
-    row: Math.floor(Math.random() * rows) + 1
-  });
-  
-  const randomSequence = ({cols, rows, minInRow}, dx, dy) => {
-    const col = Math.floor(Math.random() * (cols - minInRow + 1)) + 1;
-    const row = Math.floor(Math.random() * (rows - minInRow + 1)) + 1;
-    return Array.from({length: minInRow}, (_, i) => ({col: col + i * dx, row: row + i * dy}));
-  }
-  
-  const randomDiagonal = (board) => randomSequence(board, 1, 1);
-  const randomHorisontal = (board) => randomSequence(board, 1, 0);
-  const randomVertical = (board) => randomSequence(board, 0, 1);
-  
-  const fillBoard = (board) => {
-    let player = 1;
-    for (let col = 0; col < board.tiles.length; col++) {
-      for (let row = 0; row < board.tiles[col].length; row++) {
-        board.tiles[col][row] = player;
-        player = 3 - player; // Alternate between 1 and 2
-      }
-    }
-    return board;
-  }
-  
-  module.exports = { randomSquare, randomVertical, randomHorisontal, randomDiagonal, fillBoard };
-EOF
-```
-
-## ./src/error_messages.js
-
-> Error messages used in the whole system
-
-```bash
-cat > ./src/error_messages.js << EOF
-const ERR_TILE_OUT_OF_BOUNDS="Tile don't exist!";
-const ERR_TILE_OCCUPIED="Tile occupied!";
-const ERR_PLAYER_OUT_OF_TURN="Player out of turn!";
-const ERR_GAME_FULL="Game is full!";
-const ERR_GAME_NOT_FOUND="Game not found!";
-const ERR_INVALID_PLAYER_ID="Invalid player ID!";
-const ERR_PLAYER_NOT_FOUND="Player not found!";
-
-module.exports = {
-    ERR_TILE_OCCUPIED,
-    ERR_TILE_OUT_OF_BOUNDS,
-    ERR_PLAYER_OUT_OF_TURN,
-    ERR_GAME_FULL,
-    ERR_GAME_NOT_FOUND,
-    ERR_INVALID_PLAYER_ID,
-    ERR_PLAYER_NOT_FOUND
-};
-EOF
-```
-
-## ./src/\_\_tests\_\_/gomoku_tests.js
+## ./src/\_\_tests\_\_/game_tests.js
 
 > This is the file where we will write our tests.
 
 ```bash
-cat > ./src/__tests__/gomoku_tests.js << EOF
-//Dummy test to show jest is working
-describe('jest', () => {
-    describe('dumy test', () => {
-      it('should work', () => {
-        expect(true).toBe(true);
-      });
+cat > ./src/__tests__/game_tests.js << EOF
+const { faker } = require('@faker-js/faker'); // Vi använder faker för att skapa testdata.
+const gameHandler = require('../domain/game.js');
+const isUuid = require('uuid-validate');
+
+/**
+ * Test storage of games.
+ */
+describe('given a gameHandler', () => {
+  describe('when creating game', () => {
+    it('then should add one game', () => {
+      const expectedNumberOfGames = gameHandler.getGames().length + 1;
+      const game = gameHandler.createGame();
+      expect(gameHandler.getGames().length).toBe(expectedNumberOfGames);
+      expect(game.round).toBe(0);
+      expect(isUuid(game.id, 4)).toBe(true);
     });
+  });
+
+  describe('when creating a game with name', () => {
+    it('then should have correct name', () => {
+      const expectedName = faker.name.lastName();
+      const game = gameHandler.createGame(expectedName);
+      expect(game.name).toBe(expectedName);
+      expect(game.round).toBe(0);
+    });
+  });
+
+});
+
+/**
+ * Test listing games!
+ */
+describe('given gameHandler', () => {
+  describe('when listing games', () => {
+    it('then should return array', () => {
+      const game = gameHandler.createGame();
+      const games = gameHandler.getGames();
+      expect.arrayContaining(games);
+    });
+  });
+});
+
+/**
+ * Test retrieving a game by id.
+ */
+describe('given gameHandler', () => {
+  describe('when finding game', () => {
+    const game = gameHandler.createGame();
+    it('then should find game by id', () => {
+      const foundGame = gameHandler.findGameById(game.id);
+      expect(foundGame.id).toBe(game.id);
+    });
+  });
+});
+
+/**
+ * Test adding a player to a game.
+ */
+describe('given gameHandler and a game', () => {
+  let game = gameHandler.createGame();
+
+  describe('when adding no players', () => {
+    it('then should have game with no players', () => {
+      expect(game.player1).toBe(null);
+      expect(game.player2).toBe(null);
+    });
+  });
+
+  describe('when adding player with no name', () => {
+    it('then should have correct attributes', () => {
+      game = gameHandler.addPlayer(game.id);
+      expect(game.player1).not.toBe(null);
+      expect(game.player1).toHaveProperty("id");
+      expect(game.player1).toHaveProperty("name");
+      expect(isUuid(game.player1.id, 4)).toBe(true);
+      expect(game.player1.name).not.toBe(null);
+    });
+  });
+
+  describe('when adding another player with no name', () => {
+    it('then should have correct attributes', () => {
+      game = gameHandler.addPlayer(game.id);
+      expect(game.player2).not.toBe(null);
+      expect(game.player2.name).not.toBe(null);
+      expect(game.player1.id).not.toBe(game.player2.id);
+    });
+  });
+
+});
+
+/**
+ * Testing to play game.
+ */
+describe.skip('given gameHandler with active game', () => {
+  let game = gameHandler.createGame();
+
+  describe('when adding player turn', () => {
+    it('then should add stone to game', () => {
+      game = gameHandler.play(game);
+      expect(game.round).toBe(0);
+    });
+  });
 });
 EOF
 ```
